@@ -1,0 +1,16 @@
+{
+  "jobs": [
+    {
+      "command": "inarisk",
+      "zones": "inarisk-zones.geojson",
+      "profile": "physical-all",
+      "methodology": "reference",
+      "min_coverage": 0.15,
+      "satellite": true,
+      "map_size": 2048,
+      "cache": "../data/inarisk-cache",
+      "timeout": 45,
+      "max_pixels": 5000000
+    }
+  ]
+}

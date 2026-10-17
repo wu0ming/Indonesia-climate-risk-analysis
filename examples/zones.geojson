@@ -1,0 +1,8 @@
+{
+  "type": "FeatureCollection",
+  "features": [{
+    "type": "Feature",
+    "properties": {"name": "Synthetic Zone"},
+    "geometry": {"type": "Polygon", "coordinates": [[[106,-5],[108,-5],[108,-7],[106,-7],[106,-5]]]}
+  }]
+}

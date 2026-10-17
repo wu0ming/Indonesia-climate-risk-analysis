@@ -1,0 +1,8 @@
+{
+  "type": "FeatureCollection",
+  "features": [{
+    "type": "Feature",
+    "properties": {"name": "Synthetic Jakarta Test Zone"},
+    "geometry": {"type": "Polygon", "coordinates": [[[106.819,-6.169],[106.821,-6.169],[106.821,-6.171],[106.819,-6.171],[106.819,-6.169]]]}
+  }]
+}

@@ -1,0 +1,7 @@
+{
+  "jobs": [
+    {"command": "histogram", "input": "histogram.csv", "normalization": "inverse-gray255"},
+    {"command": "aqueduct", "input": "aqueduct.csv"},
+    {"command": "cdd", "input": "cdd.csv"}
+  ]
+}

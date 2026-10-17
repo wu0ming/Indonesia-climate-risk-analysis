@@ -1,0 +1,3 @@
+fid,Area,pixel_size_x,pixel_size_y,pixel_size_unit,source_file,histo0,histo128,histo255
+A,1,10,10,meters,synthetic_drought_index,10,20,70
+B,1,10,10,meters,synthetic_drought_index,2,0,3

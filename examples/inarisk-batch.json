@@ -1,0 +1,11 @@
+{
+  "jobs": [
+    {
+      "command": "inarisk",
+      "points": "inarisk-points.csv",
+      "zones": "inarisk-zones.geojson",
+      "services": ["INDEKS_BAHAYA_BANJIR", "INDEKS_BAHAYA_KEKERINGAN"],
+      "max_pixels": 10000
+    }
+  ]
+}
