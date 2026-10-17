@@ -26,7 +26,7 @@ import urllib.request
 from types import SimpleNamespace
 from datetime import datetime, timezone
 
-VERSION = "0.4.0"
+VERSION = "0.4.1"
 REPORT_CSS = """
 :root{--ink:#182f38;--muted:#667b84;--accent:#087b78;--line:#dfE8e8;--paper:#fff;--low:#19805b;--medium:#ad760f;--high:#c7484e}
 *{box-sizing:border-box}html{scroll-padding-top:22px}body{margin:0;background:#f2f6f5;color:var(--ink);font:15px/1.75 'Segoe UI','Microsoft YaHei',system-ui,sans-serif}button,input,select{font:inherit}button,a,summary{touch-action:manipulation}a{color:var(--accent);text-underline-offset:3px}button{cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #59bcb6;outline-offset:4px}
@@ -1179,7 +1179,7 @@ def inarisk(args, out):
     if pixels > args.max_pixels:
         raise ValueError(f"按原生分辨率需下载 {pixels:,} 像元，超过 --max-pixels {args.max_pixels:,}；请拆分资产批次或明确提高上限，不自动降采样")
     for service, meta, asset, index, window, crs in plans:
-        print(f"BNPB: {service} · asset {index + 1}/{len(assets)}", flush=True)
+        console_message(f"BNPB: {service} · asset {index + 1}/{len(assets)}", flush=True)
         download_dir = out / "downloads" / service
         download_dir.mkdir(parents=True, exist_ok=True)
         destination = download_dir / f"asset_{index:05d}.tif"
@@ -1535,6 +1535,12 @@ def render_report(out, title, tables, notes, metadata):
     (out / "report.html").write_text(document, encoding="utf-8")
 
 
+def console_message(message, *, file=None, flush=False):
+    stream = file if file is not None else sys.stdout
+    encoding = getattr(stream, "encoding", None) or "utf-8"
+    print(str(message).encode(encoding, errors="backslashreplace").decode(encoding), file=stream, flush=flush)
+
+
 def execute(args):
     if args.command == "raster" and not (args.points or args.zones):
         raise ValueError("栅格分析至少需要 --points 或 --zones")
@@ -1572,7 +1578,7 @@ def execute(args):
     except Exception as exc:
         write_json(out / "FAILED.json", {"error": str(exc), "command": args.command})
         raise
-    print(f"报告已生成: {out.resolve()}" + (f" · {metadata['run_status']}" if "run_status" in metadata else ""))
+    console_message(f"报告已生成: {out.resolve()}" + (f" · {metadata['run_status']}" if "run_status" in metadata else ""))
     return out
 
 
@@ -1612,7 +1618,7 @@ def batch(config, output, parser):
     overall = "complete" if all(r["status"] == "complete" for r in records) else "partial"
     write_json(root / "metadata.json", {"version": VERSION, "run_status": overall, "jobs": records})
     (root / "report.html").write_text('<!doctype html><meta charset="utf-8"><title>Batch results</title><h1>批量分析报告</h1><p>状态: ' + overall + '</p><ul>' + "".join(links) + "</ul>", encoding="utf-8")
-    print(f"批处理报告: {(root / 'report.html').resolve()}")
+    console_message(f"批处理报告: {(root / 'report.html').resolve()}")
     return root
 
 
@@ -1831,7 +1837,7 @@ def main(argv=None):
                 if results["pipeline_status"][0]["status"] != "complete":
                     return 3
     except (ValueError, OSError, KeyError, TypeError) as exc:
-        print(f"错误: {exc}", file=sys.stderr)
+        console_message(f"错误: {exc}", file=sys.stderr)
         return 2
     return 0
 

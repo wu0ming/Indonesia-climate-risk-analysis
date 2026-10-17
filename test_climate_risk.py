@@ -215,10 +215,16 @@ class CSVChecks(BaseChecks):
         self.assertEqual(result["cdd_annual"][0]["mean_monthly_value"], -2)
 
     def test_reports_escape_input_and_do_not_overwrite(self):
+        import io
         path = self.root / "water.csv"
         cr.write_csv(path, [{"location_name": "<script>alert(1)</script>", "bws_raw": 0.2}])
         args = self.args("aqueduct", path)
-        first, second = cr.execute(args), cr.execute(args)
+        buffer = io.BytesIO()
+        legacy_console = io.TextIOWrapper(buffer, encoding="cp1252", errors="strict")
+        with patch.object(cr.sys, "stdout", legacy_console):
+            first, second = cr.execute(args), cr.execute(args)
+        legacy_console.flush()
+        self.assertIn(b"\\u62a5", buffer.getvalue())
         self.assertNotEqual(first, second)
         report = (first / "report.html").read_text(encoding="utf-8")
         self.assertEqual(re.findall(r"<script>(.*?)</script>", report, re.S), [cr.REPORT_JS])
