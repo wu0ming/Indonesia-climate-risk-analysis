@@ -2,7 +2,7 @@
 
 一个 Python 主脚本，完成 **BNPB/InaRISK 官方数据获取 → 资产坐标/区域导入 → 风险分析 → 报告出具**。同时保留区域直方图、CMIP6 降水、Aqueduct 水风险和 CDD 制冷度日分析。支持文件选择界面、单任务命令行和配置文件批量运行，生成 HTML 报告、CSV、JSON、原始下载数据与校验记录。
 
-**One Python entry point for reproducible Indonesia climate screening.** The source code is MIT licensed. Included examples are synthetic. Original corporate data, site coordinates, boundaries and third-party datasets are not distributed.
+**One Python entry point for reproducible Indonesia climate screening.** The source code is MIT licensed. Included examples are synthetic; real-world asset inputs and third-party datasets are not distributed. See [DATA_SOURCES.md](DATA_SOURCES.md) for source attribution and data licensing.
 
 这是通用的分析工具，风险指数、降水变化和制冷度日分别展示。它们不是同一种物理量，也不合成为未经验证的“企业损失概率”。
 
@@ -222,9 +222,3 @@ python -m unittest -v
 资产全流程检查直接使用仓库内的示例点位和区域，模拟官方目录、元数据与原始 TIFF 的接口格式，验证危险性/脆弱性/风险三层的综合结果、完整 HTML 和四组 PNG/SVG 图表，并确认缓存离线重跑分数一致。该检查使用合成数据，不证明 BNPB 在线接口当时可用；实际数据缺层时报告仍明确标为部分完成。
 
 `requirements-lock.txt` 记录本次 Windows / Python 3.12 完整验证的精确依赖版本，可用 `python -m pip install -r requirements-lock.txt` 复现；其他环境先使用常规 `requirements.txt`。
-
-## 整理范围和许可
-
-旧流程到新命令的映射与不兼容修正见 [MIGRATION.md](MIGRATION.md)。第三方数据的出处和许可边界见 [DATA_SOURCES.md](DATA_SOURCES.md)。代码与合成示例采用 MIT；原始第三方数据不随本仓库分发。输出可能含你输入的地点信息和敏感边界，因此 `outputs/`、`data/`、数据库、工作簿和 GIS 大文件默认被忽略。
-
-InaRISK 在线原始指数获取已包含在本版全流程中。ESGF 下载器、QGIS 桌面插件安装、NGFS 转型情景表格和 IEA 关键矿产行业分析保留为原项目资料，不混入物理风险分数。原始资料保持原位；本仓库只发布主脚本、文档、合成示例和检查，真实资产、缓存及下载结果不随代码发布。
